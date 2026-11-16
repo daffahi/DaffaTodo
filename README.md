@@ -1,13 +1,13 @@
 # DaffaTodo
 
-A task management app with a simple Kanban board.
+A simple Kanban-style task management app.
 
 ## Features
 
 - Registration and login (JWT)
 - Multiple boards per user
-- Columns and tasks with priorities and deadlines
-- Move tasks between columns via drag & drop
+- Columns and tasks with priority and due date
+- Drag and drop tasks between columns
 
 ## Tech Stack
 
