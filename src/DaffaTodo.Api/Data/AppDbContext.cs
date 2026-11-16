@@ -1,4 +1,6 @@
-﻿using DaffaTodo.Api.Entities;
+﻿// Jembatan antara kode C# dan database. Lewat class inilah nanti kita menyimpan dan mengambil data. Mewarisi IdentityDbContext supaya tabel user Identity ikut dikelola.
+
+using DaffaTodo.Api.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

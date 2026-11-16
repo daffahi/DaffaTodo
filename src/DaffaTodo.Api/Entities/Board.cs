@@ -1,4 +1,6 @@
-﻿namespace DaffaTodo.Api.Entities;
+﻿// Papan Kanban. Tabel Boards.
+
+namespace DaffaTodo.Api.Entities;
 
 public class Board
 {

@@ -1,4 +1,5 @@
-using System.Text;
+// Titik awal aplikasi. Di sini kita mendaftarkan AppDbContext ke sistem Dependency Injection, supaya nanti bisa diminta di controller tanpa membuatnya manual.
+
 using DaffaTodo.Api.Data;
 using DaffaTodo.Api.Entities;
 using DaffaTodo.Api.Services;
@@ -7,10 +8,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// Enum dikirim sebagai teks ("High"), bukan angka (3)
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -29,6 +35,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 
 // Daftarkan service buatan kita. Scoped = satu instance baru untuk setiap request
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IBoardService, BoardService>();
 
 // Atur cara server memeriksa JWT yang masuk
 builder.Services

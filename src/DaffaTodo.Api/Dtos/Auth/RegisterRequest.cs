@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Folder Dtos (Data Transfer Object) berisi bentuk data yang masuk dan keluar lewat API (DTO). Kita tidak mengirim entity langsung ke client, supaya kolom sensitif seperti PasswordHash tidak ikut bocor dan bentuk API bisa berubah tanpa merusak database.
+
+using System.ComponentModel.DataAnnotations;
 
 namespace DaffaTodo.Api.Dtos.Auth;
 

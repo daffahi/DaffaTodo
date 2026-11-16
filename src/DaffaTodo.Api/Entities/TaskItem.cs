@@ -1,4 +1,6 @@
-﻿namespace DaffaTodo.Api.Entities;
+﻿// Kartu tugas. Tabel TaskItems. Namanya bukan Task karena bentrok dengan class Task bawaan .NET. (Seharusnya namanya: Items)
+
+namespace DaffaTodo.Api.Entities;
 
 public class TaskItem
 {

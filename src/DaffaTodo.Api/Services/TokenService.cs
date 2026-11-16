@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿// Isi sebenarnya dari kontrak tadi: membuat JWT.
+
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using DaffaTodo.Api.Entities;

@@ -1,4 +1,6 @@
-﻿namespace DaffaTodo.Api.Entities;
+﻿// Kolom di dalam papan (To Do, In Progress, Done). Tabel BoardColumns.
+
+namespace DaffaTodo.Api.Entities;
 
 public class BoardColumn
 {

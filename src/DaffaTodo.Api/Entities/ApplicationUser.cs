@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿// Class pengguna. Mewarisi IdentityUser, sehingga otomatis punya Id, UserName, Email, PasswordHash, dll. Kita hanya menambah yang kita perlukan.
+
+using Microsoft.AspNetCore.Identity;
 
 namespace DaffaTodo.Api.Entities;
 

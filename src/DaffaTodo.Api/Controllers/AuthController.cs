@@ -1,4 +1,6 @@
-﻿using DaffaTodo.Api.Dtos.Auth;
+﻿// Pintu masuk HTTP untuk register dan login. Controller hanya menerima request, memanggil Identity dan service, lalu membalas.
+
+using DaffaTodo.Api.Dtos.Auth;
 using DaffaTodo.Api.Entities;
 using DaffaTodo.Api.Services;
 using Microsoft.AspNetCore.Identity;

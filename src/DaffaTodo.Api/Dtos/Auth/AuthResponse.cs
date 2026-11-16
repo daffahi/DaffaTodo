@@ -1,4 +1,6 @@
-﻿namespace DaffaTodo.Api.Dtos.Auth;
+﻿// Data yang dikembalikan server setelah register atau login berhasil.
+
+namespace DaffaTodo.Api.Dtos.Auth;
 
 public class AuthResponse
 {
