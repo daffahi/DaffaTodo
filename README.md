@@ -1,13 +1,13 @@
 # DaffaTodo
 
-Aplikasi manajemen tugas dengan papan Kanban sederhana.
+A task management app with a simple Kanban board.
 
-## Fitur
+## Features
 
-- Registrasi dan login (JWT)
-- Banyak papan per pengguna
-- Kolom dan tugas dengan prioritas dan tenggat
-- Pindah tugas antar kolom dengan drag & drop
+- Registration and login (JWT)
+- Multiple boards per user
+- Columns and tasks with priorities and deadlines
+- Move tasks between columns via drag & drop
 
 ## Tech Stack
 
