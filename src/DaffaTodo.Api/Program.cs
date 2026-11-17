@@ -36,6 +36,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 // Daftarkan service buatan kita. Scoped = satu instance baru untuk setiap request
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<IColumnService, ColumnService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 // Atur cara server memeriksa JWT yang masuk
 builder.Services

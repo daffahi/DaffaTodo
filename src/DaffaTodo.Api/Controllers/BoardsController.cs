@@ -6,6 +6,7 @@ using DaffaTodo.Api.Dtos.Boards;
 using DaffaTodo.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DaffaTodo.Api.Extensions;
 
 namespace DaffaTodo.Api.Controllers;
 
@@ -23,7 +24,7 @@ public class BoardsController : ControllerBase
     }
 
     // Id pengguna diambil dari claim "sub" di dalam token (yang kita isi di TokenService)
-    private string UserId => User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
+    private string UserId => User.GetUserId();
 
     // GET /api/boards
     [HttpGet]
