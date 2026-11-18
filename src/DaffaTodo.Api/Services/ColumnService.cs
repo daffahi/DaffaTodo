@@ -49,4 +49,51 @@ public class ColumnService : IColumnService
             Position = column.Position
         };
     }
+
+    public async Task<bool> UpdateAsync(int id, string userId, ColumnRequest request)
+    {
+        // Kepemilikan ditelusuri lewat rantai: kolom -> board -> pemilik
+        var column = await _context.BoardColumns
+            .FirstOrDefaultAsync(c => c.Id == id && c.Board.OwnerId == userId);
+
+        if (column is null)
+        {
+            return false;
+        }
+
+        // Ganti nama tidak menyentuh Position
+        column.Name = request.Name;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id, string userId)
+    {
+        var column = await _context.BoardColumns
+            .FirstOrDefaultAsync(c => c.Id == id && c.Board.OwnerId == userId);
+
+        if (column is null)
+        {
+            return false;
+        }
+
+        // Tugas di dalam kolom ikut terhapus oleh database (cascade delete), tidak perlu dihapus satu per satu
+        _context.BoardColumns.Remove(column);
+
+        // Nomori ulang kolom yang tersisa di papan yang sama, supaya tidak ada celah urutan
+        var remaining = await _context.BoardColumns
+            .Where(c => c.BoardId == column.BoardId && c.Id != column.Id)
+            .OrderBy(c => c.Position)
+            .ToListAsync();
+
+        for (var i = 0; i < remaining.Count; i++)
+        {
+            remaining[i].Position = i;
+        }
+
+        // Penghapusan dan penomoran ulang disimpan sekaligus dalam satu transaksi
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

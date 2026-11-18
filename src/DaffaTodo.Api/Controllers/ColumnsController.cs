@@ -34,4 +34,20 @@ public class ColumnsController : ControllerBase
             ? NotFound()
             : StatusCode(StatusCodes.Status201Created, column);
     }
+
+    // PUT /api/columns/
+    [HttpPut("columns/{id:int}")]
+    public async Task<IActionResult> Update(int id, ColumnRequest request)
+    {
+        var updated = await _columnService.UpdateAsync(id, UserId, request);
+        return updated ? NoContent() : NotFound();
+    }
+
+    // DELETE /api/columns/
+    [HttpDelete("columns/{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _columnService.DeleteAsync(id, UserId);
+        return deleted ? NoContent() : NotFound();
+    }
 }
