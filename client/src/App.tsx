@@ -1,30 +1,24 @@
-import { useState } from 'react'
-import { login } from './api/auth'
+import { Navigate, Route, Routes } from 'react-router'
+import { ProtectedRoute } from './components/ProtectedRoute'
+import BoardsPage from './pages/BoardsPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 function App() {
-  // useState = penyimpanan data di komponen. Kalau nilainya berubah, tampilan ikut diperbarui
-  const [result, setResult] = useState('')
-
-  const handleTest = async () => {
-    try {
-      const data = await login({ email: 'test@example.com', password: 'Test1234' })
-      setResult(`Login success: ${data.email}`)
-    } catch {
-      setResult('Login failed, check the browser console')
-    }
-  }
-
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-100">
-      <h1 className="text-3xl font-bold text-slate-800">DaffaTodo</h1>
-      <button
-        onClick={handleTest}
-        className="rounded bg-slate-800 px-4 py-2 text-white"
-      >
-        Test API
-      </button>
-      <p className="text-slate-700">{result}</p>
-    </div>
+    <Routes>
+      {/* Halaman terbuka, bisa diakses tanpa login */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+
+      {/* Halaman di dalam ProtectedRoute hanya bisa dibuka setelah login */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/boards" element={<BoardsPage />} />
+      </Route>
+
+      {/* Alamat lain yang tidak dikenal dialihkan ke /boards (yang akan menuju /login kalau belum login) */}
+      <Route path="*" element={<Navigate to="/boards" replace />} />
+    </Routes>
   )
 }
 

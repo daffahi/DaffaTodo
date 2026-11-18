@@ -21,3 +21,9 @@ export interface AuthResponse {
   email: string
   fullName: string
 }
+
+// Data pengguna yang sedang login, yang ditampilkan di layar
+export interface AuthUser {
+  email: string
+  fullName: string
+}
