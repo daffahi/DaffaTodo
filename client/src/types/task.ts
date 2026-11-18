@@ -20,3 +20,9 @@ export interface TaskRequest {
   priority: TaskPriority
   dueDate?: string
 }
+
+// Data yang dikirim saat memindahkan tugas. Samakan dengan MoveTaskRequest.cs
+export interface MoveTaskRequest {
+  boardColumnId: number
+  position: number
+}

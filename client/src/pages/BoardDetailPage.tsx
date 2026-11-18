@@ -5,9 +5,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { Link, useParams } from 'react-router'
 import { getBoard } from '../api/boards'
-import AddColumnForm from '../components/AddColumnForm'
 import AppHeader from '../components/AppHeader'
-import KanbanColumn from '../components/KanbanColumn'
+import KanbanBoard from '../components/KanbanBoard'
 
 function BoardDetailPage() {
   // useParams membaca bagian dinamis dari alamat. Di /boards/5, boardId = "5" (selalu berupa teks)
@@ -49,13 +48,7 @@ function BoardDetailPage() {
 
             {/* overflow-x-auto = kalau kolomnya banyak, area ini bisa digeser ke samping.
                 items-start = tinggi tiap kolom mengikuti isinya, tidak dipaksa sama tinggi */}
-            <div className="mt-6 flex items-start gap-4 overflow-x-auto pb-4">
-              {board.columns.map((column) => (
-                <KanbanColumn key={column.id} column={column} />
-              ))}
-
-              <AddColumnForm boardId={board.id} />
-            </div>
+            <KanbanBoard board={board} />
           </>
         )}
       </main>
