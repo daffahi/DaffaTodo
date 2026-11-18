@@ -16,3 +16,9 @@ export async function deleteTask(id: number): Promise<void> {
 export async function moveTask(id: number, data: MoveTaskRequest): Promise<void> {
   await api.patch(`/api/tasks/${id}/move`, data)
 }
+
+// PUT /api/tasks/{id}
+// Bentuk datanya sama dengan saat membuat tugas (TaskRequest). Posisi dan kolom tidak ikut berubah, itu urusan move
+export async function updateTask(id: number, data: TaskRequest): Promise<void> {
+  await api.put(`/api/tasks/${id}`, data)
+}
