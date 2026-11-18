@@ -39,6 +39,20 @@ builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<IColumnService, ColumnService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
+// Baca daftar alamat yang diizinkan dari appsettings.json
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? Array.Empty<string>();
+
+// Buat aturan bernama "Client": hanya alamat di daftar yang boleh memanggil API ini
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Client", policy =>
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()    // termasuk header Authorization (token)
+              .AllowAnyMethod());  // GET, POST, PUT, PATCH, DELETE
+});
+
 // Atur cara server memeriksa JWT yang masuk
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -71,8 +85,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Urutan penting: UseCors harus sebelum UseAuthentication, kalau tidak permintaan browser ditolak
+app.UseCors("Client");
+
 // Urutan penting: UseAuthentication (siapa kamu?) harus sebelum UseAuthorization (boleh akses?)
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

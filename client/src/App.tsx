@@ -1,15 +1,31 @@
-// Komponen = fungsi yang mengembalikan tampilan. Nama komponen selalu diawali huruf besar
+import { useState } from 'react'
+import { login } from './api/auth'
+
 function App() {
+  // useState = penyimpanan data di komponen. Kalau nilainya berubah, tampilan ikut diperbarui
+  const [result, setResult] = useState('')
+
+  const handleTest = async () => {
+    try {
+      const data = await login({ email: 'test@example.com', password: 'Test1234' })
+      setResult(`Login success: ${data.email}`)
+    } catch {
+      setResult('Login failed, check the browser console')
+    }
+  }
+
   return (
-    // className berisi class Tailwind:
-    // flex + items-center + justify-center = isi ditaruh tepat di tengah layar
-    // min-h-screen = tinggi minimal setinggi layar, bg-slate-100 = latar abu-abu muda
-    <div className="flex min-h-screen items-center justify-center bg-slate-100">
-      {/* text-3xl = ukuran huruf besar, font-bold = tebal, text-slate-800 = abu-abu tua */}
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-100">
       <h1 className="text-3xl font-bold text-slate-800">DaffaTodo</h1>
+      <button
+        onClick={handleTest}
+        className="rounded bg-slate-800 px-4 py-2 text-white"
+      >
+        Test API
+      </button>
+      <p className="text-slate-700">{result}</p>
     </div>
   )
 }
 
-// export default = membuat komponen ini bisa di-import oleh main.tsx
 export default App
