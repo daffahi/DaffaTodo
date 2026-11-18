@@ -96,3 +96,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Membuat class Program (yang dibuat otomatis oleh top-level statements) bisa diakses project test
+public partial class Program { }

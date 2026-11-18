@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="src/DaffaTodo.Api/DaffaTodo.Api.csproj" Id="f04112ce-6788-4a40-8403-792cba9395c4" />
+  <Project Path="tests/DaffaTodo.Api.Tests/DaffaTodo.Api.Tests.csproj" Id="a477c3ee-6b6f-4640-9cc7-f2cba00a3c9e" />
 </Solution>
