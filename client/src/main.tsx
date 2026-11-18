@@ -1,18 +1,26 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './context/AuthProvider'
 import './index.css'
 import App from './App.tsx'
 
+// Pusat cache data dari server. retry: false = kalau request gagal, langsung tampilkan error (tidak diulang otomatis)
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+  },
+})
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* BrowserRouter mengaktifkan navigasi berbasis alamat di seluruh aplikasi */}
     <BrowserRouter>
-      {/* AuthProvider membagikan status login ke semua halaman */}
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>,
 )

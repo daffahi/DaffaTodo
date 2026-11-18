@@ -9,7 +9,7 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 })
 
-// Interceptor: kode ini jalan otomatis SEBELUM setiap request dikirim
+// Interceptor request: kode ini jalan otomatis SEBELUM setiap request dikirim
 api.interceptors.request.use((config) => {
   // Ambil token yang disimpan saat login
   const token = localStorage.getItem('token')
@@ -21,3 +21,27 @@ api.interceptors.request.use((config) => {
 
   return config
 })
+
+// Kalau token kedaluwarsa (60 menit) atau tidak valid, server membalas 401, dan pengguna otomatis dikembalikan ke halaman login
+// Interceptor response: jalan otomatis SETIAP KALI balasan dari server diterima
+api.interceptors.response.use(
+  // Balasan sukses dibiarkan lewat apa adanya
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      // Request login/register juga bisa membalas 401 (password salah). Itu bukan token kedaluwarsa,
+      // jadi dikecualikan supaya pesan "Invalid email or password" tetap tampil di form
+      const isAuthRequest = error.config?.url?.startsWith('/api/auth')
+
+      if (error.response?.status === 401 && !isAuthRequest) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        // Muat ulang ke /login. AuthProvider membaca localStorage yang sudah kosong, jadi status login ikut reset
+        window.location.href = '/login'
+      }
+    }
+
+    // Error tetap diteruskan supaya pemanggilnya masih bisa menanganinya
+    return Promise.reject(error)
+  },
+)
