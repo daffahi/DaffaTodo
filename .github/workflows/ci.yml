@@ -1,7 +1,7 @@
 # Nama yang tampil di tab Actions di GitHub
 name: CI
 
-# Kapan workflow ini jalan: setiap push ke main, dan setiap pull request yang menuju main
+# Kapan workflow ini jalan: setiap push ke master, dan setiap pull request yang menuju master
 on:
   push:
     branches: [master]
