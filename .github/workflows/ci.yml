@@ -4,9 +4,9 @@ name: CI
 # Kapan workflow ini jalan: setiap push ke main, dan setiap pull request yang menuju main
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 # Hak akses minimal untuk workflow ini: hanya boleh membaca isi repo
 permissions:
