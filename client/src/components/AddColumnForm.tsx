@@ -1,5 +1,3 @@
-// Form menambah kolom, ditaruh di ujung kanan deretan kolom. Polanya sama dengan AddTaskForm.
-
 import { useState, type FormEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createColumn } from '../api/columns'

@@ -1,6 +1,4 @@
-﻿// Bentuk data satu tugas yang dikirim ke client.
-
-using DaffaTodo.Api.Entities;
+﻿using DaffaTodo.Api.Entities;
 
 namespace DaffaTodo.Api.Dtos.Tasks;
 

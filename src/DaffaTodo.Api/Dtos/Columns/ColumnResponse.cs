@@ -1,6 +1,4 @@
-﻿// Bentuk data satu kolom, lengkap dengan tugas-tugas di dalamnya.
-
-using DaffaTodo.Api.Dtos.Tasks;
+﻿using DaffaTodo.Api.Dtos.Tasks;
 
 namespace DaffaTodo.Api.Dtos.Columns;
 

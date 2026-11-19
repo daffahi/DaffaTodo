@@ -15,7 +15,6 @@ function KanbanColumn({ column }: KanbanColumnProps) {
 
   return (
     <div ref={setNodeRef} className="w-72 shrink-0 rounded-lg bg-slate-200 p-3">
-      {/* Kepala kolom (nama, jumlah, Rename, Delete) dipindah ke komponen sendiri */}
       <ColumnHeader column={column} />
 
       <div className="space-y-2">

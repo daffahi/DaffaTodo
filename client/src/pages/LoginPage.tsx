@@ -6,20 +6,16 @@ import { useAuth } from '../hooks/useAuth'
 function LoginPage() {
   const { user, login } = useAuth()
 
-  // Setiap isian form punya state sendiri
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Sudah login? Langsung ke /boards. Ini juga yang mengalihkan halaman setelah login berhasil,
-  // karena login() mengubah user, lalu halaman dirender ulang
   if (user) {
     return <Navigate to="/boards" replace />
   }
 
   const handleSubmit = async (e: FormEvent) => {
-    // Cegah browser memuat ulang halaman saat form dikirim
     e.preventDefault()
     setError('')
     setIsSubmitting(true)
@@ -29,7 +25,6 @@ function LoginPage() {
     } catch (err) {
       setError(getErrorMessage(err))
     } finally {
-      // finally selalu jalan, berhasil atau gagal
       setIsSubmitting(false)
     }
   }
@@ -45,7 +40,6 @@ function LoginPage() {
             <label htmlFor="email" className="block text-sm font-medium text-slate-700">
               Email
             </label>
-            {/* value + onChange = nilai input selalu sama dengan state (controlled input) */}
             <input
               id="email"
               type="email"
@@ -70,7 +64,6 @@ function LoginPage() {
             />
           </div>
 
-          {/* Pesan error hanya tampil kalau ada isinya */}
           {error && <p className="text-sm text-red-600">{error}</p>}
 
           <button

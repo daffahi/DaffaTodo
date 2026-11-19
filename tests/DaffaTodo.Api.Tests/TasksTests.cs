@@ -1,6 +1,4 @@
-﻿// Berisi test yang paling penting di proyek ini: logika move yang menata ulang urutan.
-
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 using DaffaTodo.Api.Dtos.Tasks;
 using DaffaTodo.Api.Entities;
@@ -61,7 +59,6 @@ public class TasksTests : ApiTestBase, IClassFixture<ApiFactory>
         await CreateTaskAsync(client, todo.Id, "B");
         var c = await CreateTaskAsync(client, todo.Id, "C");
 
-        // Pindahkan C dari posisi terakhir ke paling atas
         var move = new MoveTaskRequest { BoardColumnId = todo.Id, Position = 0 };
         var response = await client.PatchAsJsonAsync($"/api/tasks/{c.Id}/move", move, Json);
 
@@ -69,7 +66,6 @@ public class TasksTests : ApiTestBase, IClassFixture<ApiFactory>
 
         var tasks = (await GetBoardAsync(client, board.Id)).Columns[0].Tasks;
         Assert.Equal(new[] { "C", "A", "B" }, tasks.Select(t => t.Title).ToList());
-        // Nomor urutnya rapi 0, 1, 2
         Assert.Equal(new[] { 0, 1, 2 }, tasks.Select(t => t.Position).ToList());
     }
 
@@ -84,7 +80,6 @@ public class TasksTests : ApiTestBase, IClassFixture<ApiFactory>
         await CreateTaskAsync(client, todo.Id, "B");
         await CreateTaskAsync(client, progress.Id, "C");
 
-        // Pindahkan A dari To Do ke paling atas In Progress
         var move = new MoveTaskRequest { BoardColumnId = progress.Id, Position = 0 };
         var response = await client.PatchAsJsonAsync($"/api/tasks/{a.Id}/move", move, Json);
 
@@ -92,12 +87,10 @@ public class TasksTests : ApiTestBase, IClassFixture<ApiFactory>
 
         var updated = await GetBoardAsync(client, board.Id);
 
-        // Kolom tujuan: A di atas, C bergeser ke bawah
         var progressTasks = updated.Columns[1].Tasks;
         Assert.Equal(new[] { "A", "C" }, progressTasks.Select(t => t.Title).ToList());
         Assert.Equal(new[] { 0, 1 }, progressTasks.Select(t => t.Position).ToList());
 
-        // Kolom asal: tinggal B, dinomori ulang jadi 0 (tidak ada celah)
         var todoTasks = updated.Columns[0].Tasks;
         Assert.Equal(new[] { "B" }, todoTasks.Select(t => t.Title).ToList());
         Assert.Equal(0, todoTasks[0].Position);
@@ -112,7 +105,6 @@ public class TasksTests : ApiTestBase, IClassFixture<ApiFactory>
         var task = await CreateTaskAsync(client, board.Columns[0].Id, "A");
         var strangerBoard = await CreateBoardAsync(stranger);
 
-        // Mencoba memasukkan tugas ke kolom milik papan orang lain
         var move = new MoveTaskRequest { BoardColumnId = strangerBoard.Columns[0].Id, Position = 0 };
         var response = await client.PatchAsJsonAsync($"/api/tasks/{task.Id}/move", move, Json);
 

@@ -1,6 +1,4 @@
-﻿// Menambah kolom baru di urutan paling kanan.
-
-using DaffaTodo.Api.Data;
+﻿using DaffaTodo.Api.Data;
 using DaffaTodo.Api.Dtos.Columns;
 using DaffaTodo.Api.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +16,6 @@ public class ColumnService : IColumnService
 
     public async Task<ColumnResponse?> CreateAsync(int boardId, string userId, ColumnRequest request)
     {
-        // Board harus ada dan milik pengguna ini
         var boardExists = await _context.Boards
             .AnyAsync(b => b.Id == boardId && b.OwnerId == userId);
 
@@ -27,7 +24,6 @@ public class ColumnService : IColumnService
             return null;
         }
 
-        // Posisi terakhir yang ada + 1. Kalau board belum punya kolom, hasil MaxAsync null, jadi mulai dari -1 + 1 = 0
         var lastPosition = await _context.BoardColumns
             .Where(c => c.BoardId == boardId)
             .MaxAsync(c => (int?)c.Position) ?? -1;
@@ -52,7 +48,6 @@ public class ColumnService : IColumnService
 
     public async Task<bool> UpdateAsync(int id, string userId, ColumnRequest request)
     {
-        // Kepemilikan ditelusuri lewat rantai: kolom -> board -> pemilik
         var column = await _context.BoardColumns
             .FirstOrDefaultAsync(c => c.Id == id && c.Board.OwnerId == userId);
 
@@ -61,7 +56,6 @@ public class ColumnService : IColumnService
             return false;
         }
 
-        // Ganti nama tidak menyentuh Position
         column.Name = request.Name;
 
         await _context.SaveChangesAsync();
@@ -78,10 +72,8 @@ public class ColumnService : IColumnService
             return false;
         }
 
-        // Tugas di dalam kolom ikut terhapus oleh database (cascade delete), tidak perlu dihapus satu per satu
         _context.BoardColumns.Remove(column);
 
-        // Nomori ulang kolom yang tersisa di papan yang sama, supaya tidak ada celah urutan
         var remaining = await _context.BoardColumns
             .Where(c => c.BoardId == column.BoardId && c.Id != column.Id)
             .OrderBy(c => c.Position)
@@ -92,7 +84,6 @@ public class ColumnService : IColumnService
             remaining[i].Position = i;
         }
 
-        // Penghapusan dan penomoran ulang disimpan sekaligus dalam satu transaksi
         await _context.SaveChangesAsync();
         return true;
     }

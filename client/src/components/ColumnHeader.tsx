@@ -1,6 +1,3 @@
-// Bagian kepala kolom: nama, jumlah tugas, tombol Rename dan Delete.
-// Dipisah dari KanbanColumn supaya state ganti nama tidak menumpuk di file kolom.
-
 import { useState, type FormEvent, type KeyboardEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteColumn, updateColumn } from '../api/columns'
@@ -12,7 +9,6 @@ interface ColumnHeaderProps {
 }
 
 function ColumnHeader({ column }: ColumnHeaderProps) {
-  // isEditing menentukan yang tampil: nama biasa atau input untuk mengganti nama
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(column.name)
 
@@ -32,7 +28,6 @@ function ColumnHeader({ column }: ColumnHeaderProps) {
   })
 
   const startEditing = () => {
-    // Isi input dengan nama terbaru, supaya tidak tertinggal isi dari pengeditan sebelumnya
     setName(column.name)
     renameMutation.reset()
     setIsEditing(true)
@@ -40,7 +35,6 @@ function ColumnHeader({ column }: ColumnHeaderProps) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    // Nama tidak berubah? Tutup saja, tidak perlu memanggil API
     if (name.trim() === column.name) {
       setIsEditing(false)
       return
@@ -48,7 +42,6 @@ function ColumnHeader({ column }: ColumnHeaderProps) {
     renameMutation.mutate(name.trim())
   }
 
-  // Esc membatalkan ganti nama
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       setIsEditing(false)
@@ -56,7 +49,6 @@ function ColumnHeader({ column }: ColumnHeaderProps) {
   }
 
   const handleDelete = () => {
-    // Pesan konfirmasi menyebut jumlah tugas yang ikut hilang, karena ini tidak bisa dibatalkan
     const count = column.tasks.length
     const message =
       count === 0

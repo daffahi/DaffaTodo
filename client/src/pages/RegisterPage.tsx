@@ -70,7 +70,6 @@ function RegisterPage() {
             <label htmlFor="password" className="block text-sm font-medium text-slate-700">
               Password
             </label>
-            {/* minLength mengikuti aturan di Program.cs (RequiredLength = 8) */}
             <input
               id="password"
               type="password"

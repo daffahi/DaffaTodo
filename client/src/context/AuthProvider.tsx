@@ -1,12 +1,8 @@
-// Komponen yang menyimpan status login dan membagikannya ke seluruh aplikasi.
-// Saat login, token dan data pengguna disimpan di localStorage supaya tetap login setelah halaman di-refresh.
-
 import { useState, type ReactNode } from 'react'
 import * as authApi from '../api/auth'
 import type { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from '../types/auth'
 import { AuthContext } from './AuthContext'
 
-// Dibaca saat aplikasi pertama dibuka: apakah ada pengguna yang sudah login sebelumnya?
 function loadUser(): AuthUser | null {
   const raw = localStorage.getItem('user')
   if (!raw) {
@@ -16,16 +12,13 @@ function loadUser(): AuthUser | null {
   try {
     return JSON.parse(raw) as AuthUser
   } catch {
-    // Isinya rusak (mis. diedit manual), anggap belum login
     return null
   }
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Memberi fungsi (bukan hasil panggilan) supaya loadUser hanya jalan sekali, saat pertama dibuat
   const [user, setUser] = useState<AuthUser | null>(loadUser)
 
-  // Simpan hasil login/registrasi. Token dibaca oleh interceptor di api/client.ts
   const saveSession = (data: AuthResponse) => {
     const authUser: AuthUser = { email: data.email, fullName: data.fullName }
 
@@ -49,7 +42,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    // Semua komponen di dalam "children" bisa mengakses nilai ini
     <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>

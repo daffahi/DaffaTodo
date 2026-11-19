@@ -1,6 +1,4 @@
-﻿// Bentuk data papan lengkap: papan, kolomnya, dan tugas di tiap kolom. Ini yang nanti dipakai React untuk menggambar papan Kanban.
-
-using DaffaTodo.Api.Dtos.Columns;
+﻿using DaffaTodo.Api.Dtos.Columns;
 
 namespace DaffaTodo.Api.Dtos.Boards;
 

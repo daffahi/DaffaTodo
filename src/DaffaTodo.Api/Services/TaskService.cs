@@ -1,6 +1,4 @@
-﻿// Seluruh logika tugas, termasuk penataan ulang urutan saat tugas dipindah.
-
-using DaffaTodo.Api.Data;
+﻿using DaffaTodo.Api.Data;
 using DaffaTodo.Api.Dtos.Tasks;
 using DaffaTodo.Api.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +16,6 @@ public class TaskService : ITaskService
 
     public async Task<TaskResponse?> CreateAsync(int columnId, string userId, TaskRequest request)
     {
-        // Menelusuri rantai: kolom -> papan -> pemilik. Tidak perlu Include karena hanya dipakai di filter
         var columnExists = await _context.BoardColumns
             .AnyAsync(c => c.Id == columnId && c.Board.OwnerId == userId);
 
@@ -27,7 +24,6 @@ public class TaskService : ITaskService
             return null;
         }
 
-        // Tugas baru ditaruh paling bawah di kolomnya
         var lastPosition = await _context.TaskItems
             .Where(t => t.BoardColumnId == columnId)
             .MaxAsync(t => (int?)t.Position) ?? -1;
@@ -58,7 +54,6 @@ public class TaskService : ITaskService
             return false;
         }
 
-        // Update tidak menyentuh Position dan kolom. Itu urusan Move
         task.Title = request.Title;
         task.Description = request.Description;
         task.Priority = request.Priority;
@@ -80,8 +75,6 @@ public class TaskService : ITaskService
 
         var sourceColumnId = task.BoardColumnId;
 
-        // Kolom tujuan harus milik pengguna dan berada di papan yang sama dengan kolom asal.
-        // Cek terakhir: "papan kolom tujuan punya kolom asal tugas" = papannya sama
         var targetColumn = await _context.BoardColumns
             .FirstOrDefaultAsync(c => c.Id == request.BoardColumnId
                 && c.Board.OwnerId == userId
@@ -92,24 +85,20 @@ public class TaskService : ITaskService
             return false;
         }
 
-        // Ambil semua tugas di kolom tujuan (tanpa tugas yang sedang dipindah), urut berdasarkan posisi
         var targetTasks = await _context.TaskItems
             .Where(t => t.BoardColumnId == targetColumn.Id && t.Id != task.Id)
             .OrderBy(t => t.Position)
             .ToListAsync();
 
-        // Sisipkan tugas di posisi yang diminta. Clamp menjaga angkanya tidak melebihi jumlah tugas
         var index = Math.Clamp(request.Position, 0, targetTasks.Count);
         targetTasks.Insert(index, task);
         task.BoardColumnId = targetColumn.Id;
 
-        // Beri nomor urut ulang 0, 1, 2, ... di kolom tujuan
         for (var i = 0; i < targetTasks.Count; i++)
         {
             targetTasks[i].Position = i;
         }
 
-        // Kalau pindah kolom, kolom asal juga ditata ulang supaya tidak ada celah urutan
         if (sourceColumnId != targetColumn.Id)
         {
             var sourceTasks = await _context.TaskItems
@@ -123,7 +112,6 @@ public class TaskService : ITaskService
             }
         }
 
-        // Semua perubahan disimpan sekaligus dalam satu transaksi
         await _context.SaveChangesAsync();
         return true;
     }
@@ -138,13 +126,11 @@ public class TaskService : ITaskService
             return false;
         }
 
-        // Celah urutan setelah hapus tidak masalah, tugas tetap diurutkan lewat Position
         _context.TaskItems.Remove(task);
         await _context.SaveChangesAsync();
         return true;
     }
 
-    // Mengubah entity menjadi DTO. static karena tidak memakai data milik class
     private static TaskResponse ToResponse(TaskItem task)
     {
         return new TaskResponse

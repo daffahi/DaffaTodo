@@ -1,6 +1,4 @@
-﻿// Data yang dikirim client saat login.
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DaffaTodo.Api.Dtos.Auth;
 

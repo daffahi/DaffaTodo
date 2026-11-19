@@ -6,7 +6,6 @@ import { AuthProvider } from './context/AuthProvider'
 import './index.css'
 import App from './App.tsx'
 
-// Pusat cache data dari server. retry: false = kalau request gagal, langsung tampilkan error (tidak diulang otomatis)
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: false },

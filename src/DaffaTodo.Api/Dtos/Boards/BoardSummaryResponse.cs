@@ -1,6 +1,4 @@
-﻿// Bentuk data papan untuk daftar papan. Isinya ringkas, tanpa kolom dan tugas.
-
-namespace DaffaTodo.Api.Dtos.Boards;
+﻿namespace DaffaTodo.Api.Dtos.Boards;
 
 public class BoardSummaryResponse
 {

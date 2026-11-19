@@ -1,6 +1,4 @@
-﻿// Menguji CRUD papan dan, yang terpenting, kepemilikan data.
-
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 using DaffaTodo.Api.Dtos.Boards;
 using DaffaTodo.Api.Tests.Infrastructure;
@@ -20,7 +18,6 @@ public class BoardsTests : ApiTestBase, IClassFixture<ApiFactory>
 
         var board = await CreateBoardAsync(client);
 
-        // Urutan sudah diurutkan oleh backend berdasarkan Position
         var names = board.Columns.Select(c => c.Name).ToList();
         Assert.Equal(new[] { "To Do", "In Progress", "Done" }, names);
     }
@@ -32,7 +29,6 @@ public class BoardsTests : ApiTestBase, IClassFixture<ApiFactory>
         var stranger = await CreateAuthenticatedClientAsync();
         await CreateBoardAsync(owner, "Owner Board");
 
-        // Pengguna lain mengambil daftar papannya sendiri
         var boards = await stranger.GetFromJsonAsync<List<BoardSummaryResponse>>("/api/boards", Json);
 
         Assert.Empty(boards!);
@@ -47,7 +43,6 @@ public class BoardsTests : ApiTestBase, IClassFixture<ApiFactory>
 
         var response = await stranger.GetAsync($"/api/boards/{board.Id}");
 
-        // 404, bukan 403, supaya orang tidak bisa menebak id papan milik pengguna lain
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
@@ -75,7 +70,6 @@ public class BoardsTests : ApiTestBase, IClassFixture<ApiFactory>
         var response = await client.DeleteAsync($"/api/boards/{board.Id}");
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
-        // Setelah dihapus, papan tidak ditemukan lagi
         var afterDelete = await client.GetAsync($"/api/boards/{board.Id}");
         Assert.Equal(HttpStatusCode.NotFound, afterDelete.StatusCode);
     }
@@ -91,7 +85,6 @@ public class BoardsTests : ApiTestBase, IClassFixture<ApiFactory>
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-        // Papan milik pemilik tetap utuh
         var stillThere = await owner.GetAsync($"/api/boards/{board.Id}");
         Assert.Equal(HttpStatusCode.OK, stillThere.StatusCode);
     }

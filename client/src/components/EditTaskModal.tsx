@@ -1,5 +1,3 @@
-// Jendela edit tugas. Form-nya sama dengan AddTaskForm, ditambah isian deskripsi, dan semua isiannya diisi dari data tugas yang ada.
-
 import { useEffect, useState, type FormEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -9,16 +7,13 @@ import type { TaskItem, TaskPriority, TaskRequest } from '../types/task'
 
 interface EditTaskModalProps {
   task: TaskItem
-  // Fungsi untuk menutup modal, dikirim dari TaskCard
   onClose: () => void
 }
 
 function EditTaskModal({ task, onClose }: EditTaskModalProps) {
-  // Nilai awal diambil dari data tugas. Modal hanya dibuat saat dibuka, jadi isiannya selalu segar
   const [title, setTitle] = useState(task.title)
   const [description, setDescription] = useState(task.description ?? '')
   const [priority, setPriority] = useState<TaskPriority>(task.priority)
-  // Input tanggal butuh format "2026-12-31", sedangkan server mengirim "2026-12-31T00:00:00": ambil 10 karakter pertama
   const [dueDate, setDueDate] = useState(task.dueDate?.slice(0, 10) ?? '')
 
   const queryClient = useQueryClient()
@@ -31,7 +26,6 @@ function EditTaskModal({ task, onClose }: EditTaskModalProps) {
     },
   })
 
-  // Tekan Esc untuk menutup modal. Listener dipasang saat modal muncul dan dilepas saat modal hilang
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -45,7 +39,6 @@ function EditTaskModal({ task, onClose }: EditTaskModalProps) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    // Deskripsi dan tenggat yang dikosongkan dikirim sebagai undefined, sehingga di database menjadi null
     mutation.mutate({
       title,
       description: description || undefined,
@@ -54,9 +47,7 @@ function EditTaskModal({ task, onClose }: EditTaskModalProps) {
     })
   }
 
-  // createPortal(isi, tujuan): menggambar isi di tujuan (body), bukan di tempat komponen ini dipanggil
   return createPortal(
-    // onPointerDown + stopPropagation: mencegah dnd-kit menganggap klik/seleksi teks di modal sebagai awal drag
     <div
       onPointerDown={(e) => e.stopPropagation()}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"

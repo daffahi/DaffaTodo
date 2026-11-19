@@ -16,7 +16,6 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task }: TaskCardProps) {
-  // Menentukan modal edit sedang tampil atau tidak
   const [isEditing, setIsEditing] = useState(false)
 
   const queryClient = useQueryClient()
@@ -36,7 +35,6 @@ function TaskCard({ task }: TaskCardProps) {
     <div className="rounded bg-white p-3 shadow-sm">
       <p className="font-medium text-slate-800">{task.title}</p>
 
-      {/* line-clamp-2 = deskripsi dipotong setelah dua baris, supaya kartu tidak memanjang */}
       {task.description && (
         <p className="mt-1 line-clamp-2 text-sm text-slate-600">{task.description}</p>
       )}
@@ -75,7 +73,6 @@ function TaskCard({ task }: TaskCardProps) {
         <p className="mt-2 text-xs text-red-600">{getErrorMessage(mutation.error)}</p>
       )}
 
-      {/* Modal hanya dibuat saat isEditing true. Setiap dibuka, isian form dimulai dari data terbaru */}
       {isEditing && <EditTaskModal task={task} onClose={() => setIsEditing(false)} />}
     </div>
   )

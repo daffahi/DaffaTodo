@@ -1,5 +1,3 @@
-// Header yang tadinya ada di BoardsPage dipindah ke komponen sendiri, karena sekarang dipakai dua halaman
-
 import { Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 
@@ -8,7 +6,6 @@ function AppHeader() {
 
   return (
     <header className="flex items-center justify-between bg-white px-6 py-4 shadow">
-      {/* Logo jadi link ke daftar papan, supaya mudah kembali dari halaman mana pun */}
       <Link to="/boards" className="text-xl font-bold text-slate-800">
         DaffaTodo
       </Link>

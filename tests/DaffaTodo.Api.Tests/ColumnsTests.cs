@@ -1,6 +1,4 @@
-﻿// Menguji tambah, ganti nama, dan hapus kolom, termasuk penomoran ulang dan hapus-berantai.
-
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 using DaffaTodo.Api.Dtos.Columns;
 using DaffaTodo.Api.Tests.Infrastructure;
@@ -24,7 +22,6 @@ public class ColumnsTests : ApiTestBase, IClassFixture<ApiFactory>
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-        // Papan sudah punya kolom 0, 1, 2, jadi kolom baru mendapat posisi 3
         var column = await response.Content.ReadFromJsonAsync<ColumnResponse>(Json);
         Assert.Equal(3, column!.Position);
     }
@@ -51,13 +48,11 @@ public class ColumnsTests : ApiTestBase, IClassFixture<ApiFactory>
         var client = await CreateAuthenticatedClientAsync();
         var board = await CreateBoardAsync(client);
 
-        // Hapus kolom tengah (In Progress)
         var response = await client.DeleteAsync($"/api/columns/{board.Columns[1].Id}");
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
         var updated = await GetBoardAsync(client, board.Id);
 
-        // Sisanya To Do dan Done, bernomor 0 dan 1 tanpa celah
         Assert.Equal(new[] { "To Do", "Done" }, updated.Columns.Select(c => c.Name).ToList());
         Assert.Equal(new[] { 0, 1 }, updated.Columns.Select(c => c.Position).ToList());
     }
@@ -72,7 +67,6 @@ public class ColumnsTests : ApiTestBase, IClassFixture<ApiFactory>
 
         await client.DeleteAsync($"/api/columns/{column.Id}");
 
-        // Tugasnya ikut hilang (cascade delete), jadi menghapusnya lagi menghasilkan 404
         var response = await client.DeleteAsync($"/api/tasks/{task.Id}");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

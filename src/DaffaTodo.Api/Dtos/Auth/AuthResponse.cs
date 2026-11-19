@@ -1,10 +1,7 @@
-﻿// Data yang dikembalikan server setelah register atau login berhasil.
-
-namespace DaffaTodo.Api.Dtos.Auth;
+﻿namespace DaffaTodo.Api.Dtos.Auth;
 
 public class AuthResponse
 {
-    // Tiket JWT yang akan disimpan client dan dikirim di setiap request berikutnya
     public string Token { get; set; } = string.Empty;
 
     public string Email { get; set; } = string.Empty;

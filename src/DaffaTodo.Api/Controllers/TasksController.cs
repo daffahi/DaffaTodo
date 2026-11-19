@@ -1,6 +1,4 @@
-﻿// Pintu masuk HTTP untuk tugas.
-
-using DaffaTodo.Api.Dtos.Tasks;
+﻿using DaffaTodo.Api.Dtos.Tasks;
 using DaffaTodo.Api.Extensions;
 using DaffaTodo.Api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +20,6 @@ public class TasksController : ControllerBase
 
     private string UserId => User.GetUserId();
 
-    // POST /api/columns/3/tasks
     [HttpPost("columns/{columnId:int}/tasks")]
     public async Task<IActionResult> Create(int columnId, TaskRequest request)
     {
@@ -33,7 +30,6 @@ public class TasksController : ControllerBase
             : StatusCode(StatusCodes.Status201Created, task);
     }
 
-    // PUT /api/tasks/10
     [HttpPut("tasks/{id:int}")]
     public async Task<IActionResult> Update(int id, TaskRequest request)
     {
@@ -41,8 +37,6 @@ public class TasksController : ControllerBase
         return updated ? NoContent() : NotFound();
     }
 
-    // PATCH /api/tasks/10/move
-    // PATCH dipakai karena hanya sebagian data tugas yang berubah (kolom dan posisi)
     [HttpPatch("tasks/{id:int}/move")]
     public async Task<IActionResult> Move(int id, MoveTaskRequest request)
     {
@@ -50,7 +44,6 @@ public class TasksController : ControllerBase
         return moved ? NoContent() : NotFound();
     }
 
-    // DELETE /api/tasks/10
     [HttpDelete("tasks/{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

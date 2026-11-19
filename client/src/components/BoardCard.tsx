@@ -17,7 +17,6 @@ function BoardCard({ board }: BoardCardProps) {
   })
 
   const handleDelete = () => {
-    // Konfirmasi dulu, karena menghapus papan juga menghapus semua kolom dan tugas di dalamnya
     if (window.confirm(`Delete "${board.name}" and all its tasks?`)) {
       mutation.mutate(board.id)
     }
@@ -27,7 +26,6 @@ function BoardCard({ board }: BoardCardProps) {
     <div className="flex flex-col justify-between rounded-lg bg-white p-4 shadow">
       <Link to={`/boards/${board.id}`} className="block">
         <h3 className="font-semibold text-slate-800">{board.name}</h3>
-        {/* Deskripsi hanya tampil kalau ada isinya */}
         {board.description && (
           <p className="mt-1 text-sm text-slate-600">{board.description}</p>
         )}
@@ -35,7 +33,6 @@ function BoardCard({ board }: BoardCardProps) {
 
       <div className="mt-4 flex items-center justify-between">
         <span className="text-xs text-slate-400">
-          {/* Dari teks ISO menjadi tanggal yang mudah dibaca, mis. "Nov 17, 2026" */}
           {new Date(board.createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',

@@ -1,6 +1,4 @@
-﻿// Enum: daftar pilihan tetap. Di database disimpan sebagai angka (1, 2, 3), di kode dibaca sebagai nama (Low, Medium, High).
-
-namespace DaffaTodo.Api.Entities;
+﻿namespace DaffaTodo.Api.Entities;
 
 public enum TaskPriority
 {

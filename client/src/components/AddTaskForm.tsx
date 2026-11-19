@@ -1,5 +1,3 @@
-// Form menambah tugas di dalam satu kolom. Awalnya hanya tombol “+ Add task”, kalau diklik berubah jadi form.
-
 import { useState, type FormEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getErrorMessage } from '../api/errors'
@@ -11,7 +9,6 @@ interface AddTaskFormProps {
 }
 
 function AddTaskForm({ columnId }: AddTaskFormProps) {
-  // isOpen menentukan yang tampil: tombol "+ Add task" atau form lengkapnya
   const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('Medium')
@@ -20,10 +17,8 @@ function AddTaskForm({ columnId }: AddTaskFormProps) {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
-    // Dibungkus fungsi karena createTask butuh dua argumen (columnId dan data), sedangkan mutate hanya mengirim satu
     mutationFn: (data: TaskRequest) => createTask(columnId, data),
     onSuccess: () => {
-      // Kosongkan isian dan tutup form
       setTitle('')
       setPriority('Medium')
       setDueDate('')
@@ -34,7 +29,6 @@ function AddTaskForm({ columnId }: AddTaskFormProps) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    // Tenggat kosong dikirim sebagai undefined, bukan teks kosong
     mutation.mutate({ title, priority, dueDate: dueDate || undefined })
   }
 
@@ -63,7 +57,6 @@ function AddTaskForm({ columnId }: AddTaskFormProps) {
       />
 
       <div className="flex gap-2">
-        {/* "as TaskPriority" memberi tahu TypeScript bahwa nilai dari select pasti salah satu dari tiga pilihan */}
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value as TaskPriority)}

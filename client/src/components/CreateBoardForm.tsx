@@ -7,7 +7,6 @@ function CreateBoardForm() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
-  // queryClient = pusat cache TanStack Query, dipakai untuk menandai data basi
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
@@ -15,14 +14,12 @@ function CreateBoardForm() {
     onSuccess: () => {
       setName('')
       setDescription('')
-      // Tandai data 'boards' basi, sehingga daftar papan otomatis diambil ulang
       queryClient.invalidateQueries({ queryKey: ['boards'] })
     },
   })
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    // Deskripsi kosong dikirim sebagai undefined, bukan teks kosong
     mutation.mutate({ name, description: description || undefined })
   }
 
@@ -48,7 +45,6 @@ function CreateBoardForm() {
           onChange={(e) => setDescription(e.target.value)}
           className="flex-1 rounded border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
         />
-        {/* isPending = true selama request berjalan, tombol dinonaktifkan supaya tidak terkirim dua kali */}
         <button
           type="submit"
           disabled={mutation.isPending}
